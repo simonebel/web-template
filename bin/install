@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Install React
+npx create-react-app front
+cd front
+npm start
+
+# npm dependencies
+npm install @mui/material @emotion/react @emotion/styled
+npm install react-router-dom localforage match-sorter sort-by
