@@ -14,6 +14,7 @@ EOF
 
 ENV="dev"
 DATA_DIR=""
+CONDA_ENV_NAME=""
 while [ $# -gt 0 ]; do
     ARG=$1
     case $ARG in
@@ -26,21 +27,19 @@ while [ $# -gt 0 ]; do
         ENV=$1
         shift
         ;;
-    --data-dir)
-        shift
-        DATA_DIR=$1
-        shift
-        ;;
     esac
 done
+
+# Read DATA_DIR and CONDA_ENV from file generated during install
+while IFS= read -r line; do
+    IFS='=' read -ra KEY_VALUE <<<"$line"
+    printf -v "${KEY_VALUE[0]}" "%s" "${KEY_VALUE[1]}"
+done <".env"
 
 ## DIRECTORIES ##
 # The home directory
 BASE_DIR=$(pwd -P)
 export BASE_DIR=$BASE_DIR
-
-# Data direcotry
-export DATA_DIR=$DATA_DIR
 
 # The front end directory
 export FRONT_DIR=$BASE_DIR/front
@@ -58,29 +57,25 @@ export PYTHONPATH="${PYTHONPATH}:$BASE_DIR/src"
 # Environment mode
 export ENV="$ENV"
 
-if [ -z $DATA_DIR ]; then
-    error "DATA_DIR is not set and is required for sqlite, exiting..."
-    return 1
-else
-    mkdir -p $DATA_DIR
-fi
-
 if [ -d $SQLITE_DIR ]; then
     # Set our sqlite alias
-    alias sqlite3=$SQLITE_DIR/sqlite-tools-linux-x86-3410200/sqlite3
+    alias sqlite3=$SQLITE_DIR/sqlite3
 else
-    error "Sqlite is not setup yet, please run install script"
+    error "Sqlite is not setup yet, please run the install script before"
+    return 0
+fi
+
+if [ -z $CONDA_ENV_NAME ]; then
+
+    error "CONDA_ENV_NAME is not setup yet, please run the install script before"
+    return 0
+else
+    source ~/anaconda3/etc/profile.d/conda.sh
+    conda activate $CONDA_ENV_NAME
 fi
 
 info "Environnement set with :
         BASE_DIR=$BASE_DIR
         ENV="$ENV"
-        SQLITE="$SQLITE_DIR""
-
-# if [ -d .env/ ]; then
-#     # activate the python virtual environment
-#     source $BASE_DIR/.env/bin/activate
-# else
-#     error "No virtual environnement set-up"
-
-# fi
+        SQLITE="$SQLITE_DIR"
+        CONDA_ENV_NAME=$CONDA_ENV_NAME"
