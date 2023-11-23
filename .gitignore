@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 front/node_modules
 front/.pnp
@@ -24,3 +22,4 @@ front/yarn-error.log*
 
 __pycache__
 .env
+data/
