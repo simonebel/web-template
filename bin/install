@@ -87,6 +87,7 @@ if [ ! -f ".env" ]; then
     echo "DATA_DIR=$DATA_DIR" >>.env
 fi
 
+#set up alembic
 cd src
 conda activate $CONDA_ENV_NAME
 alembic init sql/alembic
