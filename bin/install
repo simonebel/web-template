@@ -86,3 +86,7 @@ if [ ! -f ".env" ]; then
     echo "CONDA_ENV_NAME=$CONDA_ENV_NAME" >>.env
     echo "DATA_DIR=$DATA_DIR" >>.env
 fi
+
+cd src
+conda activate $CONDA_ENV_NAME
+alembic init sql/alembic
