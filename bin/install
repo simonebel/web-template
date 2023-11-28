@@ -6,10 +6,10 @@ function printUsage() {
 
     Install all the dependencies needed.
 
-    Usage: bash install [--data-dir DATA_DIR] [--conda-env CONDA_ENV_NAME]
+    Usage: bash bin/install [--dir DATA_DIR] [--conda CONDA_ENV_NAME]
 
-    --data-dir : 
-    --conda-env : 
+    --dir : The directory containing the data of the application (e.g the sqlite db, scrapped data...)
+    --conda : The name of the conda environment to create
 
 EOF
 }
@@ -23,12 +23,12 @@ while [ $# -gt 0 ]; do
         printUsage
         exit 1
         ;;
-    --data-dir)
+    --dir)
         shift
         DATA_DIR=$1
         shift
         ;;
-    --conda-env)
+    --conda)
         shift
         CONDA_ENV_NAME=$1
         shift

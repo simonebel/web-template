@@ -1,0 +1,56 @@
+#!/bin/bash
+
+source bin/utils
+
+function printUsage() {
+    cat <<EOF
+
+    Copy the content of the templates into a target directory.
+
+    Usage: bash bin/copy [--dir TARGET_DIR] 
+
+    --dir : The directory where the content will be copied.
+
+EOF
+}
+
+TARGET_DIR=""
+while [ $# -gt 0 ]; do
+    ARG=$1
+    case $ARG in
+    -h | --help)
+        printUsage
+        exit 1
+        ;;
+    --dir)
+        shift
+        TARGET_DIR=$1
+        shift
+        ;;
+    esac
+done
+
+if [ -z $TARGET_DIR ]; then
+    error "TARGET_DIR is not set, exiting..."
+    exit 0
+fi
+
+info "Copying template into $TARGET_DIR"
+mkdir -p $TARGET_DIR
+
+FOLDERS=(bin front src)
+
+for dir in ${FOLDERS[@]}; do
+    cp -r $dir $TARGET_DIR
+    if [ $dir == "bin" ]; then
+        rm $TARGET_DIR/bin/copy
+    fi
+done
+
+FILES=(.gitignore set-env.sh)
+
+for file in ${FILES[@]}; do
+    cp $file $TARGET_DIR
+done
+
+info "Copy into $TARGET_DIR, done!"
