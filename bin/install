@@ -55,8 +55,12 @@ npx create-react-app front
 cd $ROOT_DIR/front
 
 # npm dependencies
-npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 npm install react-router-dom localforage match-sorter sort-by
+npm install --save-dev --save-exact prettier
+npm install eslint eslint-plugin-react --save-dev
+npm i eslint-config-prettier
+npm install --save-dev @trivago/prettier-plugin-sort-imports
 
 # Create conda env
 source ~/anaconda3/etc/profile.d/conda.sh
